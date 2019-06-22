@@ -2,6 +2,10 @@ dist/index.html
 dist/src.*.js
 dist/src.*.css
 dist/src.*.map
+dist/App.*.css.map
+dist/App.*.css
+dist/App.*.js
+dist/App.*.js.map
 .cache
 
 node_modules/
