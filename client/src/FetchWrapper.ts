@@ -1,10 +1,11 @@
 import { APIMethod, KeyValue } from './types';
+export const baseUrl = 'http://localhost:8080/';
 
-export class FetchWrapper {
+export class APIService {
    private _method: APIMethod = 'GET';
    //dealing with proxy issue with parcel
-   private _baseUrl: string = 'http://localhost:8080/';
-   private _headers: KeyValue<string, string>[] = [
+   private _baseUrl: string = baseUrl;
+   private _headers: KeyValue<string, string>[] | any = [
       {
          key: 'Accept',
          value: 'application/json'
@@ -17,12 +18,12 @@ export class FetchWrapper {
 
    constructor(private _authToken?: string) {}
 
-   public setBaseUrl(newUrl: string): FetchWrapper {
+   public setBaseUrl(newUrl: string): APIService {
       this._baseUrl = newUrl;
       return this;
    }
 
-   public setMethod(newMethod: APIMethod): FetchWrapper {
+   public setMethod(newMethod: APIMethod): APIService {
       this._method = newMethod;
       return this;
    }
@@ -34,7 +35,7 @@ export class FetchWrapper {
          body: JSON.stringify(body)
       };
    }
-   public initiateFetch(route: string): Promise<any> {
+   public init(route: string): Promise<any> {
       return new Promise((resolve, reject) => {
          fetch(`${this._baseUrl}${route}`).then(resolve).catch(reject)
       })
