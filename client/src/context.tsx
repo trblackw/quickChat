@@ -1,17 +1,17 @@
 import { baseUrl } from './FetchWrapper';
-import React, { createContext, ReactNode } from 'react';
-const SocketClient = require('socket.io-client')(baseUrl);
+import React, { ReactNode } from 'react';
+import { generateSocketContext } from './utils';
+import { RouteComponentProps } from '@reach/router';
 
-interface ContextProps {
-   state: any;
-   dispatch: ({ type }: { type: string }) => void;
-   io: any;
-   on: (event: string, callback: any) => any;
-   emit: (event: string, callback: any) => any;
+export const MainSocket = generateSocketContext(baseUrl);
+export const AdminSocket = generateSocketContext(baseUrl, 'admin');
+
+interface Props extends RouteComponentProps {
+   children: ReactNode;
+   client: any;
+   context: any;
 }
 
-export const SocketContext = createContext({ io: SocketClient } as ContextProps);
-export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }): JSX.Element => {
-   const { Provider } = SocketContext;
-   return <Provider value={SocketClient}>{children}</Provider>;
-};
+export const SocketProvider: React.FC<Props> = ({ children, client, context: { Provider } }): JSX.Element => (
+   <Provider value={client}>{children}</Provider>
+);
